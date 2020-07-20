@@ -14,13 +14,13 @@ const TodoApp = () => {
   React.useEffect(() => {
     let data = localStorage.getItem('todoData')
     let parsedData = JSON.parse(data)
-    if (parsedData){
+    if (parsedData) {
       setInputArray(parsedData)
     } else {
       setInputArray([])
     }
-  },[]);
- 
+  }, []);
+
   const handleChange = (event) => {
     setInputValue(event.target.value)
   }
@@ -28,14 +28,13 @@ const TodoApp = () => {
   const handleSubmit = (event) => {
     event.preventDefault()
     if (inputValue.trim()) {
-      let newObject = {content: inputValue, isCompleted: false}
+      let newObject = { content: inputValue, isCompleted: false, contentEdit: false }
       inputArray.push(newObject)
       setInputArray(inputArray)
       localStorage.setItem('todoData', JSON.stringify(inputArray))
       setInputValue('')
     }
   }
-
 
   const toggleIsCompleted = (index) => {
     inputArray[index].isCompleted = !(inputArray[index].isCompleted)
@@ -51,7 +50,7 @@ const TodoApp = () => {
     let allFalse = statusArray.every(checkFalse)
     let someTrue = statusArray.some(checkSomeTrue)
 
-    if(allFalse) {
+    if (allFalse) {
       setIsEverythingDone(false)
     } if (allTrue) {
       setIsEverythingDone(true)
@@ -65,7 +64,7 @@ const TodoApp = () => {
     setInputArray([...inputArray])
     localStorage.setItem('todoData', JSON.stringify(inputArray))
 
-    if(inputArray.length === 0){
+    if (inputArray.length === 0) {
       setIsEverythingDone(false)
     }
   }
@@ -79,7 +78,7 @@ const TodoApp = () => {
     let allFalse = inputArray.every(checkFalse)
     let someTrue = inputArray.some(checkSomeTrue)
 
-    if(allFalse) {
+    if (allFalse) {
       inputArray.map((value) => value.isCompleted = true)
       setInputArray([...inputArray])
       localStorage.setItem('todoData', JSON.stringify(inputArray))
@@ -100,9 +99,9 @@ const TodoApp = () => {
   const getArray = () => {
     if (status === 'all') {
       return inputArray
-    } else if (status=== 'active'){
-      return inputArray.filter(value => value.isCompleted === false )
-    } else if (status==='completed'){
+    } else if (status === 'active') {
+      return inputArray.filter(value => value.isCompleted === false)
+    } else if (status === 'completed') {
       return inputArray.filter(value => value.isCompleted === true)
     }
   }
@@ -120,9 +119,9 @@ const TodoApp = () => {
       </header>
       <form onSubmit={handleSubmit}>
         <div className='inputContainer'>
-          <DownIcon 
-          className={`downIcon ${(isEverythingDone && inputArray.length > 0) ? "active" : ""}`}
-          onClick={handleShavDown}
+          <DownIcon
+            className={`downIcon ${(isEverythingDone && inputArray.length > 0) ? "active" : ""}`}
+            onClick={handleShavDown}
           />
           <input
             className='todoInput'
@@ -130,56 +129,51 @@ const TodoApp = () => {
             onChange={handleChange}
             value={inputValue}
           />
-
         </div>
-        {getArray().map((item, index) => 
-          <TodoItem 
-            item={item.content} 
+        {getArray().map((item, index) =>
+          <TodoItem
+            item={item.content}
             isCompleted={item.isCompleted}
-            index={index} 
-            toggleIsCompleted={toggleIsCompleted} 
+            index={index}
+            toggleIsCompleted={toggleIsCompleted}
             key={Math.random().toString()}
             deleteItem={deleteItem}
-            isVisible={item.visibility}
-          /> 
+          />
         )}
-        {(inputArray.length > 0) && 
-        ( <div className='container'>
+        {(inputArray.length > 0) &&
+          (<div className='container'>
             <div className='filterBox one'>
-
               <span className='activeItems'>
                 {inputArray.filter((obj) => obj.isCompleted === false).length} items left
               </span>
-
-              <div 
-                onClick={()=>setStatus('all')} 
-                className={`button all ${status === 'all' && "selected"
-              }`}> All </div>
-
-              <div 
-                onClick={()=>setStatus('active')} 
-                className={`button act ${status === 'active' && "selected"
-              }`}> Active </div>
-
               <div
-                onClick={()=>setStatus('completed')} 
-                className={`button comp ${status === 'completed' && "selected"
-              }`}> Completed </div>
-
+                onClick={() => setStatus('all')}
+                className={`button all ${status === 'all' && "selected"}`}
+              > All
+              </div>
+              <div
+                onClick={() => setStatus('active')}
+                className={`button act ${status === 'active' && "selected"}`}
+              > Active
+              </div>
+              <div
+                onClick={() => setStatus('completed')}
+                className={`button comp ${status === 'completed' && "selected"}`}
+              > Completed
+              </div>
               <span onClick={handleAllClear} className='clearCompleted'> Clear Completed </span>
-
             </div>
-            <div className='filterBox two'/>  
-            <div className='filterBox three'/>
-          </div> 
-        )}
+            <div className='filterBox two' />
+            <div className='filterBox three' />
+          </div>
+          )}
       </form>
       <footer className="info">
         <p>Double-click to edit a todo</p>
         <p>Created by <span>Fahimur Reza</span></p>
         <p>Instructed by <span>Aman Deep Brar</span></p>
         <p>Part of <span>ProTek Consulting</span></p>
-	  	</footer>
+      </footer>
     </React.Fragment>
   )
 }

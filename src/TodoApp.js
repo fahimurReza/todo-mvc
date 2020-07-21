@@ -112,6 +112,14 @@ const TodoApp = () => {
     localStorage.setItem('todoData', JSON.stringify(inputArray))
   }
 
+  const updateEditedValue = (value, index) => {
+    let obj = inputArray[index]
+    obj.content = value
+    inputArray.splice(index, 1, obj)
+    setInputArray([...inputArray])
+    localStorage.setItem('todoData', JSON.stringify(inputArray))
+  }
+
   return (
     <React.Fragment>
       <header>
@@ -130,44 +138,45 @@ const TodoApp = () => {
             value={inputValue}
           />
         </div>
-        {getArray().map((item, index) =>
-          <TodoItem
-            item={item.content}
-            isCompleted={item.isCompleted}
-            index={index}
-            toggleIsCompleted={toggleIsCompleted}
-            key={Math.random().toString()}
-            deleteItem={deleteItem}
-          />
-        )}
-        {(inputArray.length > 0) &&
-          (<div className='container'>
-            <div className='filterBox one'>
-              <span className='activeItems'>
-                {inputArray.filter((obj) => obj.isCompleted === false).length} items left
-              </span>
-              <div
-                onClick={() => setStatus('all')}
-                className={`button all ${status === 'all' && "selected"}`}
-              > All
-              </div>
-              <div
-                onClick={() => setStatus('active')}
-                className={`button act ${status === 'active' && "selected"}`}
-              > Active
-              </div>
-              <div
-                onClick={() => setStatus('completed')}
-                className={`button comp ${status === 'completed' && "selected"}`}
-              > Completed
-              </div>
-              <span onClick={handleAllClear} className='clearCompleted'> Clear Completed </span>
-            </div>
-            <div className='filterBox two' />
-            <div className='filterBox three' />
-          </div>
-          )}
       </form>
+      {getArray().map((item, index) =>
+        <TodoItem
+          item={item.content}
+          isCompleted={item.isCompleted}
+          index={index}
+          toggleIsCompleted={toggleIsCompleted}
+          key={Math.random().toString()}
+          deleteItem={deleteItem}
+          updateEditedValue={updateEditedValue}
+        />
+      )}
+      {(inputArray.length > 0) &&
+        (<div className='container'>
+          <div className='filterBox one'>
+            <span className='activeItems'>
+              {inputArray.filter((obj) => obj.isCompleted === false).length} items left
+              </span>
+            <div
+              onClick={() => setStatus('all')}
+              className={`button all ${status === 'all' && "selected"}`}
+            > All
+              </div>
+            <div
+              onClick={() => setStatus('active')}
+              className={`button act ${status === 'active' && "selected"}`}
+            > Active
+              </div>
+            <div
+              onClick={() => setStatus('completed')}
+              className={`button comp ${status === 'completed' && "selected"}`}
+            > Completed
+              </div>
+            <span onClick={handleAllClear} className='clearCompleted'> Clear Completed </span>
+          </div>
+          <div className='filterBox two' />
+          <div className='filterBox three' />
+        </div>
+        )}
       <footer className="info">
         <p>Double-click to edit a todo</p>
         <p>Created by <span>Fahimur Reza</span></p>

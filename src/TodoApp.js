@@ -28,7 +28,7 @@ const TodoApp = () => {
   const handleSubmit = (event) => {
     event.preventDefault()
     if (inputValue.trim()) {
-      let newObject = { content: inputValue, isCompleted: false, contentEdit: false }
+      let newObject = { content: inputValue, isCompleted: false}
       inputArray.push(newObject)
       setInputArray(inputArray)
       localStorage.setItem('todoData', JSON.stringify(inputArray))
@@ -113,11 +113,13 @@ const TodoApp = () => {
   }
 
   const updateEditedValue = (value, index) => {
-    let obj = inputArray[index]
-    obj.content = value
-    inputArray.splice(index, 1, obj)
-    setInputArray([...inputArray])
-    localStorage.setItem('todoData', JSON.stringify(inputArray))
+    if (value.trim()){
+      let obj = inputArray[index]
+      obj.content = value
+      inputArray.splice(index, 1, obj)
+      setInputArray([...inputArray])
+      localStorage.setItem('todoData', JSON.stringify(inputArray))
+    }
   }
 
   return (

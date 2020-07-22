@@ -5,7 +5,9 @@ import { ReactComponent as DeleteIcon } from './Asset/delete01.svg';
 
 import './styles.css'
 
-const TodoItem = ({ item, index, isCompleted, toggleIsCompleted, deleteItem, updateEditedValue }) => {
+const TodoItem = (props) => {
+
+  const {item, index, isCompleted, toggleIsCompleted, deleteItem, updateEditedValue} = props;
 
   const [showDelete, setShowDelete] = React.useState(null)
   const [isEditable, setIsEditable] = React.useState(false)

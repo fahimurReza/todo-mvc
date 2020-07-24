@@ -1,81 +1,81 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 
 import { ReactComponent as CheckMark } from './Asset/checkmark02.svg';
 import { ReactComponent as DeleteIcon } from './Asset/delete01.svg';
 
 import './styles.css'
 
-const TodoItem = (props) => {
+class TodoItem extends React.Component {
+  constructor(props){
+    super(props)
+    this.state = { showDelete: null, isEditable: false, editedValue: this.props.item}
+  }
 
-  const {item, index, isCompleted, toggleIsCompleted, deleteItem, updateEditedValue} = props;
-
-  const [showDelete, setShowDelete] = React.useState(null)
-  const [isEditable, setIsEditable] = React.useState(false)
-  const [editedValue, setEditedValue] = React.useState(item)
-
-  const handleClick = () => toggleIsCompleted(index)
-  const removeItem = () => deleteItem(index)
-
-  const handleSubmit = (event) => {
+  handleSubmit = (event) => {
     event && event.preventDefault()
-    updateEditedValue(editedValue, index)
+    this.props.updateEditedValue(this.state.editedValue, this.props.index)
   }
 
-  const wrapperRef = useRef(null);
-  useOutsideAlerter(wrapperRef);
+  componentWillMount() {
+    document.addEventListener('mousedown', this.handleClick, false)
+  }
 
-  function useOutsideAlerter(ref) {
-    useEffect(() => {
-      function handleClickOutside(event) {
-        if (ref.current && !ref.current.contains(event.target)) {
-          setIsEditable(false);
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleClick, false)
+  }
+
+  handleClick = (e) => {
+    if (this.state.isEditable === true) {
+      if(!this.node.contains(e.target)){
+        this.setState({isEditable: false})
+        this.props.updateEditedValue(this.state.editedValue, this.props.index)
+        console.log(e.target)
+      }
+    }
+  }
+  render() {
+    return (
+      <div
+        ref={node => this.node = node}
+        className='item'
+        onMouseOver={() =>  this.setState({showDelete: true})}
+        onMouseLeave={() => this.setState({showDelete: false})}
+        onDoubleClick={() => this.setState({isEditable: true})}
+      >
+        <div 
+          className={`round ${this.state.isEditable ? "disappear" : ""}`} 
+          onClick={() => this.props.toggleIsCompleted(this.props.index)}
+        >
+          {this.props.isCompleted && <span> <CheckMark className='markIcon' /> </span>}
+        </div>
+  
+        {
+          this.state.isEditable ? (
+            <form onSubmit={this.handleSubmit} className='editForm'>
+              <input
+                className='editInput'
+                value={this.state.editedValue}
+                onChange={(e) => this.setState({editedValue: e.target.value})}
+                autoFocus={true}
+              />
+            </form>
+          ) : (
+              <div className='itemContainer'>
+                <span className={`itemContent ${this.props.isCompleted  ? "completed" : ""}`} >{this.props.item}</span>
+                {this.state.showDelete &&
+                  <span>
+                    <DeleteIcon
+                      className='deleteIcon'
+                      onClick={() => this.props.deleteItem(this.props.index)}
+                    />
+                  </span>
+                }
+              </div>
+            )
         }
-      }
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, [ref]);
-  }
-
-  return (
-    <div
-      ref={wrapperRef}
-      className='item'
-      onMouseOver={() => setShowDelete(true)}
-      onMouseLeave={() => setShowDelete(false)}
-      onDoubleClick={() => setIsEditable(true)}
-    >
-      <div className={`round ${isEditable ? "disappear" : ""}`} onClick={handleClick}>
-        {isCompleted && <span> <CheckMark className='markIcon' /> </span>}
       </div>
-
-      {
-        isEditable ? (
-          <form onSubmit={handleSubmit} className='editForm'>
-            <input
-              className='editInput'
-              value={editedValue}
-              onChange={(e) => setEditedValue(e.target.value)}
-              autoFocus={true}
-            />
-          </form>
-        ) : (
-            <div className='itemContainer'>
-              <span className={`itemContent ${isCompleted ? "completed" : ""}`} >{item}</span>
-              {showDelete &&
-                <span>
-                  <DeleteIcon
-                    className='deleteIcon'
-                    onClick={removeItem}
-                  />
-                </span>
-              }
-            </div>
-          )
-      }
-    </div>
-  )
+    )
+  }  
 }
 
 export default TodoItem

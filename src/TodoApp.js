@@ -119,6 +119,10 @@ const TodoApp = () => {
       inputArray.splice(index, 1, obj)
       setInputArray([...inputArray])
       localStorage.setItem('todoData', JSON.stringify(inputArray))
+    } else if (!value.trim()){
+      inputArray.splice(index, 1)
+      setInputArray([...inputArray])
+      localStorage.setItem('todoData', JSON.stringify(inputArray))
     }
   }
 

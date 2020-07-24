@@ -186,7 +186,7 @@ const TodoApp = () => {
       <footer className="info">
         <p>Double-click to edit a todo</p>
         <p>Created by <span>Fahimur Reza</span></p>
-        <p>Instructed by <span>Aman Deep Brar</span></p>
+        <p>Assigned by <span>Aman Deep Brar</span></p>
         <p>Part of <span>ProTek Consulting</span></p>
       </footer>
     </React.Fragment>

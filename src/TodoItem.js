@@ -6,9 +6,9 @@ import { ReactComponent as DeleteIcon } from './Asset/delete01.svg';
 import './styles.css'
 
 class TodoItem extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props)
-    this.state = { showDelete: null, isEditable: false, editedValue: this.props.item}
+    this.state = { showDelete: null, isEditable: false, editedValue: this.props.item }
   }
 
   handleSubmit = (event) => {
@@ -26,8 +26,8 @@ class TodoItem extends React.Component {
 
   handleClick = (e) => {
     if (this.state.isEditable === true) {
-      if(!this.node.contains(e.target)){
-        this.setState({isEditable: false})
+      if (!this.node.contains(e.target)) {
+        this.setState({ isEditable: false })
         this.props.updateEditedValue(this.state.editedValue, this.props.index)
         console.log(e.target)
       }
@@ -38,30 +38,30 @@ class TodoItem extends React.Component {
       <div
         ref={node => this.node = node}
         className='item'
-        onMouseOver={() =>  this.setState({showDelete: true})}
-        onMouseLeave={() => this.setState({showDelete: false})}
-        onDoubleClick={() => this.setState({isEditable: true})}
+        onMouseOver={() => this.setState({ showDelete: true })}
+        onMouseLeave={() => this.setState({ showDelete: false })}
+        onDoubleClick={() => this.setState({ isEditable: true })}
       >
-        <div 
-          className={`round ${this.state.isEditable ? "disappear" : ""}`} 
+        <div
+          className={`round ${this.state.isEditable ? "disappear" : ""}`}
           onClick={() => this.props.toggleIsCompleted(this.props.index)}
         >
           {this.props.isCompleted && <span> <CheckMark className='markIcon' /> </span>}
         </div>
-  
+
         {
           this.state.isEditable ? (
             <form onSubmit={this.handleSubmit} className='editForm'>
               <input
                 className='editInput'
                 value={this.state.editedValue}
-                onChange={(e) => this.setState({editedValue: e.target.value})}
+                onChange={(e) => this.setState({ editedValue: e.target.value })}
                 autoFocus={true}
               />
             </form>
           ) : (
               <div className='itemContainer'>
-                <span className={`itemContent ${this.props.isCompleted  ? "completed" : ""}`} >{this.props.item}</span>
+                <span className={`itemContent ${this.props.isCompleted ? "completed" : ""}`} >{this.props.item}</span>
                 {this.state.showDelete &&
                   <span>
                     <DeleteIcon
@@ -75,7 +75,7 @@ class TodoItem extends React.Component {
         }
       </div>
     )
-  }  
+  }
 }
 
 export default TodoItem

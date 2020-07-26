@@ -1,8 +1,9 @@
 import React from 'react';
-import './styles.css'
-import { ReactComponent as DownIcon } from './Asset/down02.svg';
 
 import TodoItem from './TodoItem'
+import { ReactComponent as DownIcon } from './Asset/down02.svg';
+
+import './styles.css'
 
 const TodoApp = () => {
 
@@ -109,6 +110,7 @@ const TodoApp = () => {
   const handleAllClear = () => {
     let filteredArray = inputArray.filter(value => value.isCompleted === false)
     setInputArray([...filteredArray])
+    setIsEverythingDone(false)
     localStorage.setItem('todoData', JSON.stringify(inputArray))
   }
 

@@ -29,10 +29,10 @@ class TodoItem extends React.Component {
       if (!this.node.contains(e.target)) {
         this.setState({ isEditable: false })
         this.props.updateEditedValue(this.state.editedValue, this.props.index)
-        console.log(e.target)
       }
     }
   }
+  
   render() {
     return (
       <div
